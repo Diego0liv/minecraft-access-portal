@@ -1,0 +1,26 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="auth-shell compact">
+  <div class="auth-intro">
+    <span class="eyebrow">ÁREA DO JOGADOR</span>
+    <h1>Acesse sua conta</h1>
+    <p>Consulte o estado da whitelist e os dados para entrar no servidor.</p>
+  </div>
+  <form class="auth-card" method="post" action="/login">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <% if (errors.length) { %>
+      <div class="alert error" role="alert"><ul><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div>
+    <% } %>
+    <label>E-mail
+      <input type="email" name="email" value="<%= email %>" maxlength="254" autocomplete="email" required>
+    </label>
+    <label>Senha do portal
+      <input type="password" name="password" maxlength="128" autocomplete="current-password" required>
+    </label>
+    <button class="button primary full" type="submit">Entrar</button>
+    <p class="form-foot"><a href="/reenviar-confirmacao">Reenviar confirmação</a></p>
+  </form>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

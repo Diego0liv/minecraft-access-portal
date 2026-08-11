@@ -1,0 +1,40 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">SERVIDOR JAVA • 26.2</span>
+    <h1>Seu acesso ao mundo da <span>GnomoTech</span></h1>
+    <p>Crie sua conta, confirme o e-mail e seu nome será adicionado automaticamente à whitelist.</p>
+    <div class="hero-actions">
+      <% if (currentUser) { %>
+        <a class="button primary" href="/painel">Ver meu acesso</a>
+      <% } else { %>
+        <a class="button primary" href="/cadastro">Criar minha conta</a>
+        <a class="button secondary" href="/login">Já tenho cadastro</a>
+      <% } %>
+    </div>
+  </div>
+  <aside class="server-card" aria-label="Informações do servidor">
+    <div class="online-line"><span class="online-dot"></span>Servidor disponível</div>
+    <dl>
+      <div><dt>Endereço</dt><dd><%= serverAddress %></dd></div>
+      <div><dt>Versão</dt><dd>Minecraft Java <%= minecraftVersion %></dd></div>
+      <div><dt>Acesso</dt><dd>Whitelist + AuthMe</dd></div>
+    </dl>
+  </aside>
+</section>
+
+<section class="steps" aria-labelledby="steps-title">
+  <div class="section-heading">
+    <span class="eyebrow">COMO FUNCIONA</span>
+    <h2 id="steps-title">Três passos para jogar</h2>
+  </div>
+  <div class="step-grid">
+    <article><span>01</span><h3>Crie sua conta</h3><p>Informe seu e-mail e o nome exato utilizado no launcher.</p></article>
+    <article><span>02</span><h3>Confirme o e-mail</h3><p>Abra o link enviado para autorizar automaticamente sua entrada.</p></article>
+    <article><span>03</span><h3>Entre no servidor</h3><p>No primeiro acesso, registre sua senha segura diretamente no AuthMe.</p></article>
+  </div>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

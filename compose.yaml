@@ -1,0 +1,72 @@
+name: minecraft-access-portal
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-minecraft_access}
+      POSTGRES_USER: ${POSTGRES_USER:-minecraft_access}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+    secrets:
+      - postgres-password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - access_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-minecraft_access} -d $${POSTGRES_DB:-minecraft_access}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt:
+      - no-new-privileges:true
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      POSTGRES_HOST: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+      RCON_PASSWORD_FILE: /run/secrets/minecraft-rcon-password
+      SMTP_PASSWORD_FILE: /run/secrets/smtp-password
+      TURNSTILE_SECRET_FILE: /run/secrets/turnstile-secret
+    secrets:
+      - postgres-password
+      - minecraft-rcon-password
+      - smtp-password
+      - turnstile-secret
+    networks:
+      - access_internal
+      - minecraft_server
+    depends_on:
+      postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+secrets:
+  postgres-password:
+    file: ./secrets/postgres-password
+  minecraft-rcon-password:
+    file: ./secrets/minecraft-rcon-password
+  smtp-password:
+    file: ./secrets/smtp-password
+  turnstile-secret:
+    file: ./secrets/turnstile-secret
+
+volumes:
+  postgres_data:
+
+networks:
+  access_internal:
+    internal: true
+  minecraft_server:
+    external: true

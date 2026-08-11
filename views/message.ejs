@@ -1,0 +1,11 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="message-shell">
+  <div class="message-icon <%= kind %>" aria-hidden="true"><%= kind === 'success' ? '✓' : kind === 'warning' ? '!' : '×' %></div>
+  <h1><%= heading %></h1>
+  <p><%= message %></p>
+  <a class="button primary" href="<%= actionHref %>"><%= actionLabel %></a>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

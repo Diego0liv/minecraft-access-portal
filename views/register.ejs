@@ -1,0 +1,39 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="auth-shell">
+  <div class="auth-intro">
+    <span class="eyebrow">NOVO JOGADOR</span>
+    <h1>Crie seu acesso</h1>
+    <p>Após confirmar o e-mail, o nome informado será liberado automaticamente na whitelist.</p>
+    <div class="notice"><strong>Atenção:</strong> escreva exatamente o mesmo nome usado no TLauncher ou Minecraft.</div>
+  </div>
+  <form class="auth-card" method="post" action="/cadastro">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <% if (errors.length) { %>
+      <div class="alert error" role="alert"><ul><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div>
+    <% } %>
+    <label>E-mail
+      <input type="email" name="email" value="<%= values.email || '' %>" maxlength="254" autocomplete="email" required>
+    </label>
+    <label>Nome no Minecraft
+      <input type="text" name="minecraftUsername" value="<%= values.minecraftUsername || '' %>" minlength="3" maxlength="16" pattern="[A-Za-z0-9_]+" autocomplete="username" required>
+      <small>De 3 a 16 caracteres: letras, números ou _</small>
+    </label>
+    <label>Senha do portal
+      <input type="password" name="password" minlength="10" maxlength="128" autocomplete="new-password" required>
+      <small>Mínimo de 10 caracteres, com maiúscula, minúscula e número.</small>
+    </label>
+    <label>Confirme a senha
+      <input type="password" name="passwordConfirmation" minlength="10" maxlength="128" autocomplete="new-password" required>
+    </label>
+    <% if (turnstile.enabled) { %>
+      <div class="cf-turnstile" data-sitekey="<%= turnstile.siteKey %>" data-theme="dark"></div>
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <% } %>
+    <button class="button primary full" type="submit">Criar conta</button>
+    <p class="form-foot">Já se cadastrou? <a href="/login">Entre no painel</a>.</p>
+  </form>
+</section>
+
+<%- include('partials/footer', { year }) %>
+
