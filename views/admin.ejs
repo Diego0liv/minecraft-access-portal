@@ -1,0 +1,42 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="dashboard-head">
+  <div><span class="eyebrow">ADMINISTRAÇÃO</span><h1>Controle de jogadores</h1><p>Cadastros confirmados entram automaticamente; você pode bloquear acessos aqui.</p></div>
+  <span class="status-pill active"><%= minecraftStatus %></span>
+</section>
+
+<section class="panel table-panel">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Jogador</th><th>E-mail</th><th>Conta</th><th>Whitelist</th><th>Cadastrado</th><th>Ação</th></tr></thead>
+      <tbody>
+      <% users.forEach(user => { %>
+        <tr>
+          <td><strong><%= user.minecraft_username %></strong><% if (user.role === 'admin') { %><small class="role">ADMIN</small><% } %></td>
+          <td><%= user.email %></td>
+          <td><span class="mini-status <%= user.access_status %>"><%= user.access_status %></span></td>
+          <td><span class="mini-status <%= user.whitelist_status %>"><%= user.whitelist_status %></span></td>
+          <td><%= new Date(user.created_at).toLocaleDateString('pt-BR') %></td>
+          <td>
+            <% if (user.role !== 'admin') { %>
+              <% if (user.access_status === 'blocked') { %>
+                <form method="post" action="/admin/jogadores/<%= user.id %>/desbloquear">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="small-button allow" type="submit">Desbloquear</button>
+                </form>
+              <% } else { %>
+                <form method="post" action="/admin/jogadores/<%= user.id %>/bloquear">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="small-button danger" type="submit">Bloquear</button>
+                </form>
+              <% } %>
+            <% } else { %>—<% } %>
+          </td>
+        </tr>
+      <% }) %>
+      <% if (!users.length) { %><tr><td colspan="6">Nenhum cadastro encontrado.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

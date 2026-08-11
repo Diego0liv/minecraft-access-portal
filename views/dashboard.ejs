@@ -1,0 +1,30 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="dashboard-head">
+  <div><span class="eyebrow">ÁREA DO JOGADOR</span><h1>Olá, <%= user.minecraft_username %></h1><p>Acompanhe sua autorização e veja como entrar.</p></div>
+  <span class="status-pill <%= user.access_status %>"><%= user.access_status === 'active' ? 'Conta ativa' : user.access_status === 'blocked' ? 'Bloqueada' : 'Pendente' %></span>
+</section>
+
+<section class="dashboard-grid">
+  <article class="panel highlight">
+    <span class="panel-label">WHITELIST</span>
+    <h2><%= user.whitelist_status === 'whitelisted' ? 'Acesso liberado' : user.whitelist_status === 'error' ? 'Tentando novamente' : user.whitelist_status === 'removed' ? 'Acesso removido' : 'Processando' %></h2>
+    <p><%= user.whitelist_status === 'whitelisted' ? 'Seu nome está autorizado no servidor.' : 'O sistema atualizará este estado automaticamente.' %></p>
+  </article>
+  <article class="panel">
+    <span class="panel-label">SERVIDOR</span>
+    <dl class="details">
+      <div><dt>Endereço</dt><dd><%= serverAddress %></dd></div>
+      <div><dt>Versão</dt><dd>Java <%= minecraftVersion %></dd></div>
+      <div><dt>Jogador</dt><dd><%= user.minecraft_username %></dd></div>
+    </dl>
+  </article>
+  <article class="panel full-span">
+    <span class="panel-label">PRIMEIRO ACESSO</span>
+    <h2>Proteção dentro do jogo</h2>
+    <p>Ao entrar pela primeira vez, use <code>/register suaSenha suaSenha</code>. Nas próximas entradas, use <code>/login suaSenha</code>. A senha do AuthMe pode ser diferente da senha deste portal.</p>
+  </article>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

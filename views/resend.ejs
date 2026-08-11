@@ -1,0 +1,20 @@
+<%- include('partials/header', { title, appName, currentUser, csrf, year }) %>
+
+<section class="auth-shell compact">
+  <div class="auth-intro">
+    <span class="eyebrow">CONFIRMAÇÃO</span>
+    <h1>Solicite outro link</h1>
+    <p>Se o cadastro ainda estiver pendente, um novo link será enviado.</p>
+  </div>
+  <form class="auth-card" method="post" action="/reenviar-confirmacao">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <% if (errors.length) { %><div class="alert error"><ul><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div><% } %>
+    <label>E-mail
+      <input type="email" name="email" maxlength="254" autocomplete="email" required>
+    </label>
+    <button class="button primary full" type="submit">Enviar novo link</button>
+  </form>
+</section>
+
+<%- include('partials/footer', { year }) %>
+

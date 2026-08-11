@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07110b">
+  <title><%= title %> | <%= appName %></title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Página inicial">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <span><strong>GnomoTech</strong><small>Minecraft Access</small></span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <% if (currentUser) { %>
+        <a href="/painel">Meu acesso</a>
+        <% if (currentUser.role === 'admin') { %><a href="/admin">Administração</a><% } %>
+        <form action="/logout" method="post" class="inline-form">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button class="link-button" type="submit">Sair</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Entrar</a>
+        <a class="nav-cta" href="/cadastro">Criar conta</a>
+      <% } %>
+    </nav>
+  </header>
+  <main>
+
