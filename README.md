@@ -1,5 +1,7 @@
 # Minecraft Access Portal
 
+[![CI](https://github.com/Diego0liv/minecraft-access-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/Diego0liv/minecraft-access-portal/actions/workflows/ci.yml)
+
 Portal web para cadastro de jogadores, confirmação de e-mail e integração automática com a whitelist de um servidor Minecraft.
 
 ## Destaques técnicos
